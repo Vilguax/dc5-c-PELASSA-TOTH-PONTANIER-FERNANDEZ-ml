@@ -40,15 +40,14 @@ Pour lancer le script
 
 - [ ]  Interprétation et Conclusion : Discutez de vos trouvailles, en lien avec vos hypothèses initiales, et proposez des recommandations basées sur vos analyses.
 
+## Roadmap
+
+- Rendu : 14/04/2024 23h59
+- Présentation : 16/04/24
+
 ## Sources
 
  - [Data gouv](https://www.data.gouv.fr/fr/)
  - [Open Data](https://www.cnil.fr/fr/definition/open-data)
  - [Kaggle Data sets](https://www.kaggle.com/datasets)
  - [Google Data sets](https://datasetsearch.research.google.com/)
-
-## Roadmap
-
-- Rendu : 14/04/2024 23h59
-
-- Présentation : 16/04/24
