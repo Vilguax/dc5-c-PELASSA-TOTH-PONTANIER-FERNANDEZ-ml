@@ -42,6 +42,8 @@ Pour lancer le script
 
 ## Roadmap
 
+- Développement problématique + hypothèses : 05/03/2024
+- Test des hypothèses : 25/03/2024
 - Rendu : 14/04/2024 23h59
 - Présentation : 16/04/24
 
