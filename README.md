@@ -26,9 +26,11 @@ Pour lancer le script
 
 ## Tâches
 
-- [ ] Définition de la problématique : Identifiez une question de recherche ou un objectif d'analyse spécifique que vous souhaitez explorer à travers les datasets fournis.
+- [x] Définition de la problématique : Identifiez une question de recherche ou un objectif d'analyse spécifique que vous souhaitez explorer à travers les datasets fournis.
 
-- [ ]  Construction d'hypothèses : Formulez des hypothèses basées sur votre compréhension des enjeux marketing et clientèle, que vous testerez par la suite grâce à l'analyse de données.
+- [x]  Construction d'hypothèses : Formulez des hypothèses basées sur votre compréhension des enjeux marketing et clientèle, que vous testerez par la suite grâce à l'analyse de données.
+
+- [ ] Test de l'hypothèse : Utilisez des méthodes statistiques pour tester vos hypothèses et valider vos résultats.
 
 - [ ]  Analyse exploratoire : Plongez dans les datasets pour examiner les tendances, les patterns et les relations potentielles entre les différentes variables. Vous pouvez modifier et enrichir le dataset via des données externes.
 
