@@ -30,7 +30,7 @@ Pour lancer le script
 
 - [x]  Construction d'hypothèses : Formulez des hypothèses basées sur votre compréhension des enjeux marketing et clientèle, que vous testerez par la suite grâce à l'analyse de données.
 
-- [ ] Test de l'hypothèse : Utilisez des méthodes statistiques pour tester vos hypothèses et valider vos résultats.
+- [x] Test de l'hypothèse : Utilisez des méthodes statistiques pour tester vos hypothèses et valider vos résultats.
 
 - [ ]  Analyse exploratoire : Plongez dans les datasets pour examiner les tendances, les patterns et les relations potentielles entre les différentes variables. Vous pouvez modifier et enrichir le dataset via des données externes.
 
