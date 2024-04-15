@@ -4,6 +4,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
+from sklearn.model_selection import GridSearchCV
 from sklearn.pipeline import Pipeline
 import joblib
 
@@ -38,11 +39,28 @@ preprocessor = ColumnTransformer(
         ('num', numeric_transformer, numeric_features)
 ])
 
+# Réglage hyperparametre via grid search
+param_grid = {
+    'regressor__n_estimators': [100, 200, 300],
+    'regressor__max_features': ['sqrt', 'log2', None],
+    'regressor__max_depth': [None, 10, 20, 30],
+    'regressor__min_samples_split': [2, 5, 10]
+}
+
+
 # Création du modèle
 model = Pipeline(steps=[
     ('preprocessor', preprocessor),
     ('regressor', RandomForestRegressor())
 ])
+
+# Création de l'objet GridSearchCV
+search = GridSearchCV(model, param_grid, cv=5, scoring='neg_mean_squared_error', verbose=3)
+
+# Exécution de la recherche
+search.fit(X_train, y_train)
+print("Meilleurs paramètres:", search.best_params_)
+print("Meilleur score MSE:", -search.best_score_)
 
 # Entraînement du modèle
 model.fit(X_train, y_train)
