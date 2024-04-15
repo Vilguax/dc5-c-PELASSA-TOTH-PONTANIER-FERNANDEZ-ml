@@ -5,57 +5,54 @@ from sklearn.metrics import mean_squared_error
 from sklearn.impute import SimpleImputer
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
+import joblib
 
 # Charger les données
 combined_data = pd.read_csv('final_data_cleaned.csv')
 
-# Fonction pour nettoyer et convertir les colonnes de prix et de taux de remboursement
-def clean_currency(value):
-    """Convertit les valeurs monétaires en float."""
-    if isinstance(value, str):
-        value = value.replace('%', '').replace(',', '.').strip()
-        return float(value)
-    return value
-
-# Nettoyage des données
-combined_data['prix'] = combined_data['prix'].apply(clean_currency)
-combined_data['taux_remboursement'] = combined_data['taux_remboursement'].apply(lambda x: float(x.strip('%'))/100 if isinstance(x, str) else x)
-
 # Suppression des colonnes non nécessaires
-columns_to_drop = ['nom', 'libelle_ASMR_x', 'libelle_ASMR_y', 'valeur_ASMR', 'canaux_diffusion', 'date_lancement', 'duree_campagne', 'augmentation_ventes']
+columns_to_drop = ['nom', 'libelle_ASMR_x', 'libelle_ASMR_y', 'valeur_ASMR', 'canaux_diffusion', 'date_lancement', 'duree_campagne']
 combined_data.drop(columns=columns_to_drop, inplace=True)
 
-# Imputation des valeurs manquantes
-numeric_features = combined_data.select_dtypes(include=['float64', 'int64']).columns.tolist()
-categorical_features = combined_data.select_dtypes(include=['object']).columns.tolist()
+# Exclusion des lignes dont les colonnes sont vide
+combined_data.dropna(subset=['prix'], inplace=True)
+combined_data.dropna(subset=['budget_marketing_total'], inplace=True)
+combined_data.dropna(subset=['augmentation_prescriptions'], inplace=True)
+combined_data.dropna(subset=['augmentation_ventes'], inplace=True)
 
-numeric_imputer = SimpleImputer(strategy='median')
-categorical_imputer = SimpleImputer(strategy='most_frequent')
+# Séparation des données en variables explicatives et variable cible
+X = combined_data.drop(columns=['augmentation_prescriptions'])
+y = combined_data['augmentation_prescriptions']
+
+# Séparation des données en données d'entraînement et données de test
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Création du pipeline
+numeric_features = ['prix', 'budget_marketing_total', 'taux_remboursement']
+numeric_transformer = Pipeline(steps=[
+    ('imputer', SimpleImputer(strategy='mean'))
+])
 
 preprocessor = ColumnTransformer(
     transformers=[
-        ('num', numeric_imputer, numeric_features),
-        ('cat', categorical_imputer, categorical_features)
-    ],
-    remainder='passthrough'
-)
+        ('num', numeric_transformer, numeric_features)
+])
 
-# Préparation des données pour l'entraînement
-y = combined_data['augmentation_prescriptions']
-X = combined_data.drop('augmentation_prescriptions', axis=1)
-
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Construction du pipeline de machine learning
-pipeline = Pipeline([
+# Création du modèle
+model = Pipeline(steps=[
     ('preprocessor', preprocessor),
-    ('regressor', RandomForestRegressor(n_estimators=100, random_state=42))
+    ('regressor', RandomForestRegressor())
 ])
 
 # Entraînement du modèle
-pipeline.fit(X_train, y_train)
+model.fit(X_train, y_train)
 
-# Prédiction sur les données de test et calcul de l'erreur
-y_pred = pipeline.predict(X_test)
-rmse = mean_squared_error(y_test, y_pred, squared=False)
-print(f'RMSE: {rmse}')
+# Prédiction
+y_pred = model.predict(X_test)
+
+# Evaluation du modèle
+mse = mean_squared_error(y_test, y_pred)
+print(f'Mean Squared Error: {mse}')
+
+# Sauvegarde du modèle
+joblib.dump(model, 'model.pkl')
